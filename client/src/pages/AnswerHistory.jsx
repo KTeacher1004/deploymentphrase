@@ -20,12 +20,12 @@ export default function AnswerHistory() {
         const fetchAnswerHistory = async () => {
             try {
                 setLoading(true);
-                const testResultResponse = await axios.get(`${API_URL}/api/test-results/${id}`, {
+                const testResultResponse = await axios.get(`${API_URL}/test-results/${id}`, {
                     withCredentials: true,
                 });
                 const testResult = testResultResponse.data;
 
-                const questionSetResponse = await axios.get(`${API_URL}/api/questions`, {
+                const questionSetResponse = await axios.get(`${API_URL}/questions`, {
                     params: { questionSetId: testResult.testId.questionSetId },
                     withCredentials: true,
                 });
@@ -61,7 +61,7 @@ export default function AnswerHistory() {
     async function handleGetAISuggestion() {
         try {
             setLoadingAI(true);
-            const response = await axios.post(`${API_URL}/api/ai-suggestion/bulk-feedback`, {
+            const response = await axios.post(`${API_URL}/ai-suggestion/bulk-feedback`, {
                 answers
             }, {
                 withCredentials: true
