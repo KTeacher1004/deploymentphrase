@@ -27,7 +27,7 @@ export default function AnswerHistory() {
                 const testResult = testResultResponse.data;
 
                 const questionSetResponse = await axios.get(`${API_URL}/questions`, {
-                    params: { questionSetId: testResult.testId },
+                    params: { questionSetId: testResult.testId.questionSetId },
                     withCredentials: true,
                 });
                 const questionSet = questionSetResponse.data;
@@ -103,7 +103,7 @@ export default function AnswerHistory() {
                         <thead className="bg-blue-500 text-white">
                             <tr>
                                 <th className="border border-gray-300 px-4 py-2">Question</th>
-                                <th className="border border-gray-300 px-4 py-2">Options</th> {/* New column */}
+                                <th className="border border-gray-300 px-4 py-2">Options</th>
                                 <th className="border border-gray-300 px-4 py-2">Student Answer</th>
                                 <th className="border border-gray-300 px-4 py-2">Correct Answer</th>
                                 <th className="border border-gray-300 px-4 py-2">Correct</th>
@@ -113,7 +113,7 @@ export default function AnswerHistory() {
                             {answers.map((entry, index) => (
                                 <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}>
                                     <td className="border border-gray-300 px-4 py-2 text-gray-700">{entry.question}</td>
-                                    <td className="border border-gray-300 px-4 py-2 text-gray-700"> {/* New cell for options */}
+                                    <td className="border border-gray-300 px-4 py-2 text-gray-700">
                                         {Object.entries(entry.options).map(([key, value]) => (
                                             <div key={key}><strong>{key}:</strong> {value}</div>
                                         ))}
