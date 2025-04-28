@@ -15,6 +15,7 @@ export default function AnswerHistory() {
     const [loadingAI, setLoadingAI] = useState(false);
     const { id } = useParams();
     const { user } = useAuth();
+    const [errorMsg, setErrorMsg] = useState("");
 
     useEffect(() => {
         const fetchAnswerHistory = async () => {
@@ -26,7 +27,7 @@ export default function AnswerHistory() {
                 const testResult = testResultResponse.data;
 
                 const questionSetResponse = await axios.get(`${API_URL}/questions`, {
-                    params: { questionSetId: testResult.testId.questionSetId },
+                    params: { questionSetId: testResult.testId },
                     withCredentials: true,
                 });
                 const questionSet = questionSetResponse.data;
@@ -49,6 +50,7 @@ export default function AnswerHistory() {
                 });
                 setTestTakerName(testResult.studentId.username || "Anonymous");
             } catch (error) {
+                setErrorMsg("Could not load answer history. Please check the link or try again.");
                 console.error("Error fetching answer history:", error);
             } finally {
                 setLoading(false);
@@ -74,6 +76,8 @@ export default function AnswerHistory() {
             setLoadingAI(false);
         }
     }
+
+    if (errorMsg) return <div>{errorMsg}</div>;
 
     if (loading) {
         return <div>Loading...</div>;
