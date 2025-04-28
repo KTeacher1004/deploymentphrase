@@ -4,95 +4,92 @@ import axios from "axios";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const API_URL = import.meta.env.VITE_API_URL; // ✅ Sửa tên biến .env thành VITE_API_URL
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const API_URL = import.meta.env.VITE_API_URL; // vẫn dùng API_URL
 
-    // Check authentication status 
-    const checkAuth = useCallback(async () => {
-        try {
-            setLoading(true);
-            const token = sessionStorage.getItem("token") || null;
-            console.log(token);
+  const checkAuth = useCallback(async () => {
+    try {
+      setLoading(true);
+      const token = sessionStorage.getItem("token") || null;
+      console.log(token);
 
-            if (token && token !== "undefined" && token !== "null") {
-                console.log("🔐 Using session token...");
-                const { data } = await axios.get(`${API_URL}/users/autologin`, {
-                    headers: { Authorization: `Bearer ${token}` },
-                    withCredentials: true,
-                });
-                if (data.user) {
-                    setUser(data.user);
-                    return;
-                }
-            }
-
-            console.log("🍪 Checking auth via cookies...");
-            const { data } = await axios.get(`${API_URL}/users/autologin`, { withCredentials: true });
-            if (data.user) {
-                setUser(data.user);
-            }
-        } catch (error) {
-            console.error("❌ Auth check failed:", error?.response?.data || error.message);
-            setUser(null);
-        } finally {
-            setLoading(false);
+      if (token && token !== "undefined" && token !== "null") {
+        console.log("🔐 Using session token...");
+        const { data } = await axios.get(`${API_URL}/auth/autologin`, {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        });
+        if (data.user) {
+          setUser(data.user);
+          return;
         }
-    }, [API_URL, setLoading, setUser]);
+      }
 
-    // Login function
-    const login = async (formData) => {
-        try {
-            sessionStorage.removeItem("token");
+      console.log("🍪 Checking auth via cookies...");
+      const { data } = await axios.get(`${API_URL}/auth/autologin`, {
+        withCredentials: true,
+      });
+      if (data.user) {
+        setUser(data.user);
+      }
+    } catch (error) {
+      console.error("❌ Auth check failed:", error?.response?.data || error.message);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [API_URL]);
 
-            // Clear cookie if exists (don't set domain=localhost vì deploy rồi)
-            document.cookie = "jwt=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+  const login = async (formData) => {
+    try {
+      sessionStorage.removeItem("token");
+      document.cookie = "jwt=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
 
-            const res = await axios.post(`${API_URL}/users/login`, formData, { withCredentials: true });
+      const res = await axios.post(`${API_URL}/auth/login`, formData, {
+        withCredentials: true,
+      });
 
-            if (!formData.rememberMe) {
-                sessionStorage.setItem("token", res.data.token);
-            }
+      if (!formData.rememberMe) {
+        sessionStorage.setItem("token", res.data.token);
+      }
 
-            setUser(res.data.user);
-            window.location.href = "/";
-        } catch (err) {
-            throw new Error(err.response?.data?.message || "Login failed!");
-        }
-    };
+      setUser(res.data.user);
+      window.location.href = "/";
+    } catch (err) {
+      throw new Error(err.response?.data?.message || "Login failed!");
+    }
+  };
 
-    // Register function
-    const register = async (formData) => {
-        try {
-            await axios.post(`${API_URL}/users/register`, formData);
-            window.location.href = "/login";
-        } catch (err) {
-            throw new Error(err.response?.data?.message || "Registration failed");
-        }
-    };
+  const register = async (formData) => {
+    try {
+      await axios.post(`${API_URL}/auth/register`, formData);
+      window.location.href = "/login";
+    } catch (err) {
+      throw new Error(err.response?.data?.message || "Registration failed");
+    }
+  };
 
-    // Logout function
-    const logout = async () => {
-        try {
-            await axios.post(`${API_URL}/users/logout`, {}, { withCredentials: true });
-        } catch (error) {
-            console.error("⚠️ Logout error:", error?.response?.data || error.message);
-        }
-        sessionStorage.removeItem("token");
-        document.cookie = "jwt=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-        setUser(null);
-    };
+  const logout = async () => {
+    try {
+      await axios.post(`${API_URL}/auth/logout`, {}, { withCredentials: true });
+    } catch (error) {
+      console.error("⚠️ Logout error:", error?.response?.data || error.message);
+    }
+    sessionStorage.removeItem("token");
+    document.cookie = "jwt=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+    setUser(null);
+  };
 
-    // Auto-check login on page load
-    useEffect(() => {
-        checkAuth();
-    }, [checkAuth]);
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
-    return (
-        <AuthContext.Provider value={{ user, loading, login, register, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthContext;
