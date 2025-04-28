@@ -65,5 +65,10 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
-// Export the Express API
+// Listen only if running on Render (not Vercel)
+if (process.env.RENDER || process.env.RENDER_EXTERNAL_URL) {
+  app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+}
+
+// Export the Express API (for Vercel)
 export default app;
