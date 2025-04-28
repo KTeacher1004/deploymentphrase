@@ -13,13 +13,14 @@ export default function QuestionSet() {
     const { user } = useAuth();
 
     // Backend API URL
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const API_URL = import.meta.env.VITE_API_URL;
+
 
     // Effect to fetch question sets from the server
     useEffect(() => {
         const fetchSets = async () => {
             try {
-                const response = await axios.get(`${BACKEND_URL}/question-sets/teacher/${user._id}`);
+                const response = await axios.get(`${API_URL}/question-sets/teacher/${user._id}`);
                 if (response.status === 200) {
                     setSets(response.data);
                 } else {
@@ -30,7 +31,7 @@ export default function QuestionSet() {
             }
         };
         fetchSets();
-    }, [user._id, BACKEND_URL]);
+    }, [user._id, API_URL]);
 
     // State to manage popup visibility and new set data
     const [showPopup, setShowPopup] = useState(false);
@@ -65,7 +66,7 @@ export default function QuestionSet() {
 
         // Call the API to create a new question set
         try {
-            const response = await axios.post(`${BACKEND_URL}/question-sets`, newSet);
+            const response = await axios.post(`${API_URL}/question-sets`, newSet);
             setSets([...sets, response.data]);
             alert("Question set created successfully!");
         } catch (error) {
@@ -79,7 +80,7 @@ export default function QuestionSet() {
     const deleteSet = async (id) => {
         // Call the API to delete the question set
         try {
-            await axios.delete(`${BACKEND_URL}/question-sets/${id}`);
+            await axios.delete(`${API_URL}/question-sets/${id}`);
             setSets(sets.filter(set => set._id !== id));
             alert("Question set deleted successfully!");
         } catch (error) {

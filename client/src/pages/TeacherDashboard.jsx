@@ -8,19 +8,19 @@ export default function TeacherDashboard() {
   const { user } = useAuth();
   const [Sets, setSets] = useState([]);
   const [Tests, setTests] = useState([]);
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchSets = async () => {
         try {
-            const SetResponse = await axios.get(`${BACKEND_URL}/question-sets/teacher/${user._id}`);
+            const SetResponse = await axios.get(`${API_URL}/question-sets/teacher/${user._id}`);
             if (SetResponse.status === 200) {
                 setSets(SetResponse.data);
             } else {
                 console.error('Failed to fetch question sets:', SetResponse.statusText);
             }
 
-            const TestResponse = await axios.get(`${BACKEND_URL}/tests/teacher/${user._id}`);
+            const TestResponse = await axios.get(`${API_URL}/tests/teacher/${user._id}`);
             if (TestResponse.status === 200) {
                 setTests(TestResponse.data);
             } else {
@@ -31,7 +31,7 @@ export default function TeacherDashboard() {
         }
     };
     fetchSets();
-  }, [user._id, BACKEND_URL]);
+  }, [user._id, API_URL]);
 
   return (
     <div className="min-h-screen flex">
@@ -46,7 +46,7 @@ export default function TeacherDashboard() {
           <Hamburgerbar />
         </div>
         <h1 className="text-3xl font-bold text-gray-800 mb-4">Welcome, {user?.username || "Teacher"} 👋</h1>
-        <p className="text-gray-600">Here’s your teaching control center 🧑‍🏫.</p>
+        <p className="text-gray-600">Here's your teaching control center 🧑‍🏫.</p>
 
         {/* Some dashboard boxes */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">

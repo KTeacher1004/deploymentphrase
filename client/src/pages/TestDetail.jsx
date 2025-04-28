@@ -11,7 +11,7 @@ import QuestionDistribution from '../components/teacher/QuestionDistribution';
 export default function TestDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const API_URL = import.meta.env.VITE_API_URL;
     const { user } = useAuth();
 
     const [test, setTest] = useState(null);
@@ -33,7 +33,7 @@ export default function TestDetail() {
         const fetchData = async () => {
             try {
                 // Fetch test details
-                const testResponse = await axios.get(`${BACKEND_URL}/tests/${id}`, {
+                const testResponse = await axios.get(`${API_URL}/tests/${id}`, {
                     withCredentials: true
                 });
                 if (testResponse.status === 200) {
@@ -41,7 +41,7 @@ export default function TestDetail() {
                     console.log("Test Data:", testResponse.data);
                     if (testResponse.data.assignedStudentsId && testResponse.data.assignedStudentsId.length > 0) {
                         // Fetch assigned students details
-                        const studentsResponse = await axios.get(`${BACKEND_URL}/users/students`, {
+                        const studentsResponse = await axios.get(`${API_URL}/users/students`, {
                             params: { ids: testResponse.data.assignedStudentsId },
                             withCredentials: true
                         });
@@ -54,7 +54,7 @@ export default function TestDetail() {
                 }
 
                 // Fetch question sets for this teacher
-                const setsResponse = await axios.get(`${BACKEND_URL}/question-sets/teacher/${user._id}`, {
+                const setsResponse = await axios.get(`${API_URL}/question-sets/teacher/${user._id}`, {
                     withCredentials: true
                 });
                 if (setsResponse.status === 200) {
@@ -66,7 +66,7 @@ export default function TestDetail() {
         };
 
         fetchData();
-    }, [id, BACKEND_URL, user._id]);
+    }, [id, API_URL, user._id]);
 
     // Add this after the existing useEffect
     useEffect(() => {
@@ -88,7 +88,7 @@ export default function TestDetail() {
 
             // Fetch questions for the question set
             const questionsResponse = await axios.get(
-                `${import.meta.env.VITE_BACKEND_URL}/questions`,
+                `${API_URL}/questions`,
                 {
                 params: {
                     questionSetId: setId
@@ -123,7 +123,7 @@ export default function TestDetail() {
                 hard: hardQuestions.length
             });
             
-            const response = await axios.put(`${BACKEND_URL}/tests/${id}`, updateData, {
+            const response = await axios.put(`${API_URL}/tests/${id}`, updateData, {
                 withCredentials: true
             });
             
@@ -140,7 +140,7 @@ export default function TestDetail() {
     // Handle updating test mode
     const handleModeChange = async (mode) => {
         try {
-            const response = await axios.put(`${BACKEND_URL}/tests/${id}`, {
+            const response = await axios.put(`${API_URL}/tests/${id}`, {
                 mode: mode
             }, {
                 withCredentials: true
@@ -169,7 +169,7 @@ export default function TestDetail() {
         
         try {
             // Find student by username or email
-            const studentResponse = await axios.get(`${BACKEND_URL}/users/find`, {
+            const studentResponse = await axios.get(`${API_URL}/users/find`, {
                 params: { 
                     [searchType]: identifier,
                     isTeacher: false 
@@ -189,7 +189,7 @@ export default function TestDetail() {
                 }
 
                 // Update the test
-                const response = await axios.put(`${BACKEND_URL}/tests/${id}`, {
+                const response = await axios.put(`${API_URL}/tests/${id}`, {
                     assignedStudentsId: [...(test.assignedStudentsId || []), student._id]
                 }, {
                     withCredentials: true
@@ -221,7 +221,7 @@ export default function TestDetail() {
     const handleRemoveStudent = async (studentId) => {
         try {
             // Remove student from test
-            const response = await axios.put(`${BACKEND_URL}/tests/${id}`, {
+            const response = await axios.put(`${API_URL}/tests/${id}`, {
                 assignedStudentsId: test.assignedStudentsId.filter(id => id !== studentId)
             }, {
                 withCredentials: true
@@ -244,7 +244,7 @@ export default function TestDetail() {
         const { checked } = e.target;
         console.log("Allow multiple attempts:", checked);
         try {
-            const response = await axios.put(`${BACKEND_URL}/tests/${id}`, {
+            const response = await axios.put(`${API_URL}/tests/${id}`, {
                 multipleAttempts: checked
             }, {
                 withCredentials: true
@@ -275,7 +275,7 @@ export default function TestDetail() {
             }
 
             // Update test status to published
-            const response = await axios.put(`${BACKEND_URL}/tests/${id}`, {
+            const response = await axios.put(`${API_URL}/tests/${id}`, {
                 status: 'published'
             }, {
                 withCredentials: true
@@ -295,7 +295,7 @@ export default function TestDetail() {
     const handleCancelPublish = async () => {
         try {
             // Update test status back to draft
-            const response = await axios.put(`${BACKEND_URL}/tests/${id}`, {
+            const response = await axios.put(`${API_URL}/tests/${id}`, {
                 status: 'draft'
             }, {
                 withCredentials: true
@@ -370,7 +370,7 @@ export default function TestDetail() {
         }
 
         try {
-            const response = await axios.put(`${BACKEND_URL}/tests/${id}`, {
+            const response = await axios.put(`${API_URL}/tests/${id}`, {
                 totalQuestions: tempDistribution.totalQuestions,
                 easy: tempDistribution.easy,
                 medium: tempDistribution.medium,

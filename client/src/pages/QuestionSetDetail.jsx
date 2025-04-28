@@ -8,7 +8,8 @@ import BackButton from "../components/ui/BackButton.jsx";
 export default function QuestionSetDetail() {
     // Get the question set ID from the URL parameters
     const { id } = useParams(); 
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const API_URL = import.meta.env.VITE_API_URL;
+
 
     // Ensure `questions` is an array by default
     const [questions, setQuestions] = useState([]); 
@@ -20,7 +21,7 @@ export default function QuestionSetDetail() {
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
-                const response = await axios.get(`${BACKEND_URL}/questions`, {
+                const response = await axios.get(`${API_URL}/questions`, {
                     params: { questionSetId: id },
                 });
                 if (response.status === 200) {
@@ -28,7 +29,7 @@ export default function QuestionSetDetail() {
                 } else {
                     console.error("Failed to fetch questions:", response.statusText);
                 }
-                const setResponse = await axios.get(`${BACKEND_URL}/question-sets/${id}`);
+                const setResponse = await axios.get(`${API_URL}/question-sets/${id}`);
                 if (setResponse.status === 200) {
                     setNewSet(setResponse.data);
                 } else {
@@ -40,7 +41,7 @@ export default function QuestionSetDetail() {
         };
 
         fetchQuestions();
-    }, [id, BACKEND_URL]);
+    }, [id, API_URL]);
 
     // Function to handle opening and closing the question popup
     const openPopup = (question = null) => {
@@ -57,7 +58,7 @@ export default function QuestionSetDetail() {
         try {
             if (editQuestion) {
                 // Update existing question
-                const response = await axios.put(`${BACKEND_URL}/questions/${editQuestion._id}`, formData);
+                const response = await axios.put(`${API_URL}/questions/${editQuestion._id}`, formData);
                 console.log("Response:", response.data.message);
                 if (response.status === 200) {
                     setQuestions((prev) =>
@@ -79,7 +80,7 @@ export default function QuestionSetDetail() {
                     return;
                 }
                 // Create a new question
-                const response = await axios.post(`${BACKEND_URL}/questions`, { ...formData, questionSetId: id });
+                const response = await axios.post(`${API_URL}/questions`, { ...formData, questionSetId: id });
                 if (response.status === 201) {
                     setQuestions([...questions, response.data]);
                 }
@@ -98,7 +99,7 @@ export default function QuestionSetDetail() {
     const deleteQuestion = async (questionId) => {
         if (!window.confirm("Are you sure you want to delete this question?")) return;
         try {
-            await axios.delete(`${BACKEND_URL}/questions/${questionId}`);
+            await axios.delete(`${API_URL}/questions/${questionId}`);
             setQuestions((prev) => prev.filter((q) => q._id !== questionId));
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message) {
@@ -133,7 +134,7 @@ export default function QuestionSetDetail() {
                     + Add Question
                 </button>
 
-                <UploadQuestions newSet={newSet} BACKEND_URL={BACKEND_URL} setQuestions={setQuestions} />
+                <UploadQuestions newSet={newSet} API_URL={API_URL} setQuestions={setQuestions} />
 
                 {/* Question categories */}
                 {["easy", "medium", "hard"].map((level) => (

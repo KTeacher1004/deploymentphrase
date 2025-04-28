@@ -15,18 +15,18 @@ export default function StudentDashboard() {
         upcomingTests: 0
     });
     const { user } = useAuth();
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const API_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         const fetchStudentData = async () => {
             try {
                 // Fetch test history
-                const historyRes = await axios.get(`${BACKEND_URL}/test-results/student/${user._id}`);
+                const historyRes = await axios.get(`${API_URL}/test-results/student/${user._id}`);
                 setTestHistory(historyRes.data);
                 console.log(historyRes.data);
 
                 // Fetch available tests
-                const testsRes = await axios.get(`${BACKEND_URL}/tests/student/${user._id}`);
+                const testsRes = await axios.get(`${API_URL}/tests/student/${user._id}`);
 
                 // Filter out tests that are already completed
                 const completedTestIds = historyRes.data.map(result => result.testId._id);
@@ -52,7 +52,7 @@ export default function StudentDashboard() {
         };
 
         fetchStudentData();
-    }, [user._id, BACKEND_URL]);
+    }, [user._id, API_URL]);
 
     const startTest = (testId) => {
         window.location.href = `/student-dashboard/take-quiz/${testId}`;

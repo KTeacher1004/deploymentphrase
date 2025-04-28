@@ -27,7 +27,7 @@ export default function TakeQuiz() {
       try {
         setLoading(true);
         // Fetch test details
-        const testResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/tests/${id}`);
+        const testResponse = await axios.get(`${import.meta.env.VITE_API_URL}/tests/${id}`);
         const testData = testResponse.data;
         console.log('Test Data:', testData);
         setTest(testData);
@@ -35,7 +35,7 @@ export default function TakeQuiz() {
 
         // Check if the test allows multiple attempts
         if (!testData.multipleAttempts) {
-          const attemptsResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/test-results/${testData._id}/results`);
+          const attemptsResponse = await axios.get(`${import.meta.env.VITE_API_URL}/test-results/${testData._id}/results`);
           console.log('Attempts:', attemptsResponse.data);
           if (attemptsResponse.data.length > 0) {
             attemptsResponse.data.forEach(attempt => {
@@ -49,7 +49,7 @@ export default function TakeQuiz() {
         }
         // Fetch questions for the question set
         const questionsResponse = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/questions`,
+          `${import.meta.env.VITE_API_URL}/questions`,
           {
             params: {
               questionSetId: testData.questionSetId
@@ -175,7 +175,7 @@ export default function TakeQuiz() {
       });
 
       //Submit test attempt
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/test-results/submit`, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/test-results/submit`, {
         studentId: user._id,
         testId: id,
         answers,

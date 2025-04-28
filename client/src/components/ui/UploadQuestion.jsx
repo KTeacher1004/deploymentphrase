@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import * as XLSX from "xlsx";
 import axios from "axios";
 
-export default function UploadQuestions({ newSet, BACKEND_URL, setQuestions }) {
+export default function UploadQuestions({ newSet, API_URL, setQuestions }) {
     const [previewQuestions, setPreviewQuestions] = useState([]);
     const [fileName, setFileName] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,7 +74,7 @@ export default function UploadQuestions({ newSet, BACKEND_URL, setQuestions }) {
             const questionsToUpload = previewQuestions.map(({ id, ...rest }) => rest);
 
             // Call the API to upload questions
-            const response = await axios.post(`${BACKEND_URL}/questions/multiple`, { "questions" : questionsToUpload });
+            const response = await axios.post(`${API_URL}/questions/multiple`, { "questions" : questionsToUpload });
             if (response.status === 201) {
                 setQuestions((prev) => [...prev, ...response.data]);
                 alert("Questions uploaded successfully!");

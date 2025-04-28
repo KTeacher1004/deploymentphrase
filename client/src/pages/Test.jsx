@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import BackButton from '../components/ui/BackButton';
 import { useAuth } from '../hooks/useAuth';
 import axios from 'axios';
-import TestPopup from '../components/ui/TestPopup'; // You’ll need to create this
+import TestPopup from '../components/ui/TestPopup'; // You'll need to create this
 
 export default function Test() {
     const [tests, setTests] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
     const { user } = useAuth();
 
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const [newTest, setNewTest] = useState({
         title: '',
@@ -21,14 +21,14 @@ export default function Test() {
     useEffect(() => {
         const fetchTests = async () => {
             try {
-                const res = await axios.get(`${BACKEND_URL}/tests/teacher/${user._id}`);
+                const res = await axios.get(`${API_URL}/tests/teacher/${user._id}`);
                 setTests(res.data);
             } catch (err) {
                 console.error("Failed to fetch tests:", err);
             }
         };
         fetchTests();
-    }, [user._id, BACKEND_URL]);
+    }, [user._id, API_URL]);
 
     // Open/Close popup
     const openPopup = () => setShowPopup(true);
@@ -66,7 +66,7 @@ export default function Test() {
         }
         try {
             console.log("Creating test with data:", newTest);
-            const res = await axios.post(`${BACKEND_URL}/tests`, newTest);
+            const res = await axios.post(`${API_URL}/tests`, newTest);
             setTests([...tests, res.data]);
             closePopup();
             alert("Test created!");
@@ -80,7 +80,7 @@ export default function Test() {
         try {
             if (!window.confirm("Are you sure you want to delete this test and test result?")) return;
             console.log("Deleting test with ID:", id);
-            await axios.delete(`${BACKEND_URL}/tests/${id}`);
+            await axios.delete(`${API_URL}/tests/${id}`);
             setTests(tests.filter(test => test._id !== id));
             alert("Test deleted!");
         } catch (err) {

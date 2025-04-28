@@ -6,11 +6,11 @@ export default function TestSearch() {
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [searchError, setSearchError] = useState("");
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const handleSearch = async () => {
         try {
-            const res = await axios.get(`${BACKEND_URL}/tests?searchQuery=${searchQuery}`);
+            const res = await axios.get(`${API_URL}/tests?searchQuery=${searchQuery}`);
             setSearchResults(res.data);
             setSearchError("");
         } catch (err) {

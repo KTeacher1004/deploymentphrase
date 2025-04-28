@@ -17,7 +17,7 @@ export default function TestResults() {
     useEffect(() => {
         const fetchResults = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/test-results/${id}/results`, {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/test-results/${id}/results`, {
                     withCredentials: true
                 });
                 console.log("Test Results:", response.data);
