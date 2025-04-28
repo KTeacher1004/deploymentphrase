@@ -50,12 +50,20 @@ app.use(cookieParser());
 
 // API Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);         // ✅ Fix: `/api/users` chỉ nối với `userRoutes`, không cần authRoutes
+app.use("/api/users", userRoutes);
 app.use("/api/question-sets", questionSetRoutes);
 app.use("/api/questions", questionRoutes);
 app.use("/api/tests", testRoutes);
 app.use("/api/test-results", testResultRoutes);
 app.use("/api/ai-suggestion", openaAIRoutes);
 
-// Start server
-app.listen(PORT, '0.0.0.0', () => console.log(`✅ Server running on port ${PORT}`));
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
+
+// Export the Express API
+export default app;
