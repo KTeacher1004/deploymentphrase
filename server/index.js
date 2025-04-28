@@ -29,8 +29,7 @@ connectDB();
 const allowedOrigins = [
   'http://localhost:5173',
   'https://deploymentphrase.vercel.app',
-  'https://Ecademy.onrender.com', // Thêm domain Render của bạn vào đây!
-  'https://Ecademy.onrender.com/' // Thêm cả dạng có dấu / nếu cần
+  'https://sepm-server.onrender.com'
 ];
 
 app.use(
