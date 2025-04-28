@@ -33,7 +33,7 @@ export default function AnswerHistory() {
                 const questionSet = questionSetResponse.data;
 
                 const mappedAnswers = testResult.answers.map((studentAnswer) => {
-                    const question = questionSet.find(q => q._id === studentAnswer.questionId);
+                    const question = questionSet.find(q => String(q._id) === String(studentAnswer.questionId));
                     return {
                         question: question?.text || "Unknown question",
                         options: question?.options || {},
