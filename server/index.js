@@ -27,8 +27,10 @@ connectDB();
 
 // ✨ FIX CORS
 const allowedOrigins = [
-  'http://localhost:5173',                   // Cho phép localhost dev
-  'https://deploymentphrase.vercel.app'       // Cho phép production trên Vercel
+  'http://localhost:5173',
+  'https://deploymentphrase.vercel.app',
+  'https://Ecademy.onrender.com', // Thêm domain Render của bạn vào đây!
+  'https://Ecademy.onrender.com/' // Thêm cả dạng có dấu / nếu cần
 ];
 
 app.use(
