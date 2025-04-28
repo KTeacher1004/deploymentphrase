@@ -26,13 +26,8 @@ export default function AnswerHistory() {
                 });
                 const testResult = testResultResponse.data;
 
-                const testResponse = await axios.get(`${API_URL}/tests/${testResult.testId}`, {
-                    withCredentials: true,
-                });
-                const test = testResponse.data;
-
                 const questionSetResponse = await axios.get(`${API_URL}/questions`, {
-                    params: { questionSetId: test.questionSetId },
+                    params: { questionSetId: testResult.testId },
                     withCredentials: true,
                 });
                 const questionSet = questionSetResponse.data;
