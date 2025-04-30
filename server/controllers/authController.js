@@ -26,19 +26,13 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     try {
         const { email, password, rememberMe } = req.body;
-        // Check if user exists
         const user = await User.findOne({ email });
-        // Check if user exists and password is correct
         if (user && (await user.matchPassword(password))) {
-            // if rememberMe is true, set token expiration to 30 days
-            if (rememberMe) {
-                generateToken(res, user._id, true);
-            }
-            // if rememberMe is false, set token expiration to session
-            else {
-                generateToken(res, user._id);
-            }
-            return res.json({ _id: user._id, username: user.username, email: user.email, isTeacher: user.isTeacher });
+            const token = generateToken(res, user._id, rememberMe);
+            return res.json({ 
+                user: { _id: user._id, username: user.username, email: user.email, isTeacher: user.isTeacher },
+                token: rememberMe ? undefined : token // chỉ trả token nếu không rememberMe
+            });
         } 
         return res.status(401).json({ message: "Invalid email or password" });
     } catch (error) {
