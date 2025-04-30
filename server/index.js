@@ -29,7 +29,8 @@ connectDB();
 const allowedOrigins = [
   'http://localhost:5173',
   'https://deploymentphrase.vercel.app',
-  'https://sepm-server.onrender.com'
+  'https://sepm-server.onrender.com',
+  'https://deploymentphrase-client.vercel.app'
 ];
 
 app.use(
@@ -48,6 +49,17 @@ app.use(
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
+
+// Cookie settings
+app.use((req, res, next) => {
+  res.cookie('jwt', req.cookies.jwt, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+  });
+  next();
+});
 
 // API Routes
 app.use("/api/auth", authRoutes);

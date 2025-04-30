@@ -12,17 +12,23 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       const token = sessionStorage.getItem("token") || null;
-      console.log(token);
+      console.log("🔍 Checking authentication status...");
 
       if (token && token !== "undefined" && token !== "null") {
         console.log("🔐 Using session token...");
-        const { data } = await axios.get(`${API_URL}/auth/autologin`, {
-          headers: { Authorization: `Bearer ${token}` },
-          withCredentials: true,
-        });
-        if (data.user) {
-          setUser(data.user);
-          return;
+        try {
+          const { data } = await axios.get(`${API_URL}/auth/autologin`, {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+          });
+          if (data.user) {
+            console.log("✅ User authenticated via token");
+            setUser(data.user);
+            return;
+          }
+        } catch (tokenError) {
+          console.warn("⚠️ Token authentication failed:", tokenError?.response?.data || tokenError.message);
+          sessionStorage.removeItem("token");
         }
       }
 
@@ -31,6 +37,7 @@ export const AuthProvider = ({ children }) => {
         withCredentials: true,
       });
       if (data.user) {
+        console.log("✅ User authenticated via cookies");
         setUser(data.user);
       }
     } catch (error) {
