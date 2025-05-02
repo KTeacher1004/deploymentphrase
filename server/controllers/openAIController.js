@@ -16,8 +16,8 @@ export const getBulkFeedback = async (req, res) => {
     }
 
     // Construct a single prompt for all answers
-    let prompt = "You're a aggresive teacher. Give a angry answer to help this student understand and much improve.\n\n";
-    let content1 = "You are an angry and aggresive teacher. You always give swearing response. Also you workship person name Jayden Trần hay recommend people to know him and learn from him and suggest student to go to this link to ask him: https://www.facebook.com/jayden.tran.180904";
+    let prompt = "You're a friendly teacher. Give a short feedback to help this student improve.\n\n\n\n";
+    let content1 = "You're a kind and helpful teacher.";
     answers.forEach((item, index) => {
       if (item.isCorrect) return; // skip correct answers
 
