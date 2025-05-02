@@ -20,7 +20,7 @@ export default function TestDetail() {
     const [identifier, setIdentifier] = useState("");
     const [assignedStudents, setAssignedStudents] = useState([]);
     const [error, setError] = useState("");
-    const [searchType, setSearchType] = useState("username"); // "username" or "email"
+    const [searchType, setSearchType] = useState("username");
     const [tempDistribution, setTempDistribution] = useState({
         totalQuestions: 0,
         easy: 0,
@@ -395,6 +395,23 @@ export default function TestDetail() {
         }
     };
 
+    const updateCategory = async (category) => {
+        try {
+            const response = await axios.put(`${BACKEND_URL}/tests/${id}`, {
+                category: category
+            }, {
+                withCredentials: true
+            });
+            if (response.status === 200) {
+                setTest(prev => ({ ...prev, category: category }));
+                alert("Test category updated successfully!");
+            }
+        } catch (error) {
+            console.error("Error updating test category:", error);
+            alert("Failed to update test category. Please try again.");
+        }
+    };
+
     const handleViewResults = () => {
         navigate(`/tests/${id}/results`);
     };
@@ -469,6 +486,24 @@ export default function TestDetail() {
                         </p>
                     )}
                 </div>
+
+                <div className="mb-8">
+                    <h2 className="text-xl font-semibold mb-4">Select Category</h2>
+                    <div className="flex gap-4 items-center">
+                        <select
+                            onChange={(e) => updateCategory(e.target.value)}
+                            className="flex-1 p-2 border rounded-md"
+                            value = {test.category || "General"}
+                        >
+                            <option value="General">General</option>
+                            <option value="Math">Math</option>
+                            <option value="Science">Science</option>
+                            <option value="History">History</option>
+                            <option value="Language">Language</option>
+                        </select>
+                    </div>
+                </div>
+
 
                 <div className="flex items-center mb-8">
                     <input

@@ -49,7 +49,7 @@ export default function TeacherDashboard() {
         <p className="text-gray-600">Here's your teaching control center 🧑‍🏫.</p>
 
         {/* Some dashboard boxes */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           
           <div className="bg-card shadow-md p-6 rounded-lg">
             <h2 className="text-xl font-semibold text-gray-700">Question Sets</h2>
@@ -89,10 +89,7 @@ export default function TeacherDashboard() {
             </ul>
           </div>
 
-          <div className="bg-card shadow-md p-6 rounded-lg">
-            <h2 className="text-xl font-semibold text-gray-700">Submissions</h2>
-            <p className="text-gray-500 mt-2">Review completed tests from students.</p>
-          </div>
+          
         </div>
       </main>
     </div>

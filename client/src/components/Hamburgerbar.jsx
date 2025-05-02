@@ -8,7 +8,7 @@ export default function Hamburgerbar() {
     await logout();
   };
   return (
-    <div className="p-4">
+    <div className="p-4" md:hidden>
       {/* Hamburger Button */}
       <button
         className="flex flex-col space-y-1.5"

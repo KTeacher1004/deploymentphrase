@@ -5,27 +5,23 @@ import TestResult from "../models/testResultModel.js";
 // Get all tests (support searchQuery)
 export const getAllTests = async (req, res) => {
     try {
-        const { searchQuery } = req.query;
 
-        let query = {
-            status: 'published',
-            mode: 'public'
-        };
-
-        if (searchQuery) {
-            query.title = { $regex: searchQuery, $options: 'i' };
+        if (req.query.searchQuery) {
+            const searchQuery = req.query.searchQuery;
+            const tests = await Test.find({
+                title: { $regex: searchQuery, $options: "i" },
+                status: 'published',
+                mode: 'public'
+            
+            }).populate("teacherId");
+            if (!tests.length) return res.status(404).json({ message: `${searchQuery} not found` });
+            return res.status(200).json(tests);
         }
-
-        const tests = await Test.find(query).populate("teacherId", "name email");
-
-        if (!tests.length) {
-            return res.status(404).json({ message: `${searchQuery ? searchQuery : 'No'} tests found.` });
-        }
-
-        return res.status(200).json(tests);
+        
+        const tests = await Test.find({ mode: 'public' }).populate("teacherId");
+        res.status(200).json(tests);
     } catch (error) {
-        console.error("Error fetching tests:", error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Error fetching tests", error });
     }
 };
 
