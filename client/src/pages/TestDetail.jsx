@@ -397,18 +397,12 @@ export default function TestDetail() {
 
     const updateCategory = async (category) => {
         try {
-            const response = await axios.put(`${BACKEND_URL}/tests/${id}`, {
+            const response = await axios.put(`${API_URL}/tests/${id}`, {
                 category: category
-            }, {
-                withCredentials: true
             });
-            if (response.status === 200) {
-                setTest(prev => ({ ...prev, category: category }));
-                alert("Test category updated successfully!");
-            }
-        } catch (error) {
-            console.error("Error updating test category:", error);
-            alert("Failed to update test category. Please try again.");
+            setTest(response.data);
+        } catch (err) {
+            console.error("Error updating category:", err);
         }
     };
 
