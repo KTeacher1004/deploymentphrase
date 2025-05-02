@@ -46,7 +46,7 @@ export default function TestSearch() {
 
     const fetchAllTests = async () => {
         try {
-            const res = await axios.get(`${BACKEND_URL}/tests`);
+            const res = await axios.get(`${API_URL}/tests`);
             setSearchResults(res.data);
             setFilteredResults(res.data);
             setSearchError("");
@@ -97,11 +97,11 @@ export default function TestSearch() {
                     </button>
                 </div>
                 
-                    {filteredResultsResults.length > 0 ? (
+                    {filteredResults.length > 0 ? (
                         <div className="bg-card p-4 rounded-lg shadow mt-4">
                             <h2 className="text-xl font-semibold mb-4">Search Results</h2>
                             <div className="space-y-4">
-                                {filteredResultsResults.map((test) => (
+                                {filteredResults.map((test) => (
                                     <div key={test._id} className="flex justify-between items-center p-4 border rounded-lg">
                                         <div>
                                             <h3 className="font-semibold">{test.title}</h3>
