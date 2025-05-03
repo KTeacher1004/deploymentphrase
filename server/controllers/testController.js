@@ -44,7 +44,8 @@ export const getTestsByStudent = async (req, res) => {
 
         const tests = await Test.find({
             assignedStudentsId: studentId,
-            status: 'published'
+            status: 'published',
+            mode: { $in: ['assigned', 'private'] }
         }).populate({ path: 'teacherId', select: '-password' });
 
         if (!tests.length) {

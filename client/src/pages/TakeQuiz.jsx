@@ -21,13 +21,13 @@ export default function TakeQuiz() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
+  const API_URL = import.meta.env.VITE_API_URL;
   useEffect(() => {
     const fetchTest = async () => {
       try {
         setLoading(true);
         // Fetch test details
-        const testResponse = await axios.get(`${import.meta.env.VITE_API_URL}/tests/${id}`);
+        const testResponse = await axios.get(`${API_URL}/tests/${id}`);
         const testData = testResponse.data;
         console.log('Test Data:', testData);
         setTest(testData);
@@ -35,7 +35,7 @@ export default function TakeQuiz() {
 
         // Check if the test allows multiple attempts
         if (!testData.multipleAttempts) {
-          const attemptsResponse = await axios.get(`${import.meta.env.VITE_API_URL}/test-results/${testData._id}/results`);
+          const attemptsResponse = await axios.get(`${API_URL}/test-results/${testData._id}/results`);
           console.log('Attempts:', attemptsResponse.data);
           if (attemptsResponse.data.length > 0) {
             attemptsResponse.data.forEach(attempt => {
@@ -49,7 +49,7 @@ export default function TakeQuiz() {
         }
         // Fetch questions for the question set
         const questionsResponse = await axios.get(
-          `${import.meta.env.VITE_API_URL}/questions`,
+          `${API_URL}/questions`,
           {
             params: {
               questionSetId: testData.questionSetId
