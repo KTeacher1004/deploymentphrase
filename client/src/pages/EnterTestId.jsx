@@ -9,7 +9,7 @@ export default function EnterTestId() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (testId.trim()) {
-            navigate(`/take-quiz/${testId}`);
+            navigate(`/student-dashboard/take-quiz/${testId}`);
         } else {
             alert("Please enter a valid Test ID.");
         }
