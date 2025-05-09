@@ -50,6 +50,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (formData) => {
     try {
+      // Clear existing tokens
       sessionStorage.removeItem("token");
       document.cookie = "jwt=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
 
@@ -57,13 +58,14 @@ export const AuthProvider = ({ children }) => {
         withCredentials: true,
       });
 
-      if (!formData.rememberMe) {
+      if (!formData.rememberMe && res.data.token) {
         sessionStorage.setItem("token", res.data.token);
       }
 
       setUser(res.data.user);
       window.location.href = "/";
     } catch (err) {
+      console.error("Login error:", err);
       throw new Error(err.response?.data?.message || "Login failed!");
     }
   };

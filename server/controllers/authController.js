@@ -31,11 +31,12 @@ export const loginUser = async (req, res) => {
             const token = generateToken(res, user._id, rememberMe);
             return res.json({ 
                 user: { _id: user._id, username: user.username, email: user.email, isTeacher: user.isTeacher },
-                token: rememberMe ? undefined : token // chỉ trả token nếu không rememberMe
+                token: rememberMe ? undefined : token
             });
         } 
         return res.status(401).json({ message: "Invalid email or password" });
     } catch (error) {
+        console.error("Login error:", error);
         if (!res.headersSent) {
             res.status(500).json({ message: "Server error", error: error.message });
         }
