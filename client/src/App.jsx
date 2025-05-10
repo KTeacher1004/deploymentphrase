@@ -21,14 +21,7 @@ export default function App() {
     return (
         <>
             <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <ProtectedRoutes>
-                        <RedirectByRole />
-                        </ProtectedRoutes>
-                    }
-                />
+                <Route path="/" element={<Home />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
