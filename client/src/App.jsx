@@ -28,6 +28,7 @@ export default function App() {
                         </ProtectedRoutes>
                     }
                 />
+                <Route path="/home" element={<Home />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/teacher-dashboard" element={<ProtectedRoutes isTeacher={true}><TeacherDashboard /></ProtectedRoutes>} />
