@@ -15,6 +15,7 @@ import TestResults from "./pages/TestResults";
 import AnswerHistory from "./pages/AnswerHistory";
 import TestSearch from "./pages/TestSearch";
 import EnterTestId from "./pages/EnterTestId";
+import Home from "./pages/Home";
 
 export default function App() {
     return (
