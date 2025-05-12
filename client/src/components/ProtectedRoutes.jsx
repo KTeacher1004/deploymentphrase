@@ -9,7 +9,7 @@ export default function ProtectedRoute({ children, isTeacher, isStudent }) {
     }
 
     if (!user) {
-        return <Navigate to="/home" replace />;
+        return <Navigate to="/login" replace />;
     }
 
     if (isTeacher && !user.isTeacher) {
