@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 export default function RedirectByRole() {
   const { user } = useAuth();
 
-  if (!user) return <Navigate to="/login" />;
+  if (!user) return <Navigate to="/home" />;
   console.log(user);
 
   return user.isTeacher == true ? (
