@@ -35,9 +35,9 @@ export default function App() {
                 <Route path="/teacher-dashboard" element={<ProtectedRoutes isTeacher={true}><TeacherDashboard /></ProtectedRoutes>} />
                 <Route path="/teacher-dashboard/question-set" element={<ProtectedRoutes isTeacher={true}><QuestionSet /></ProtectedRoutes>} />
                 <Route path="/teacher-dashboard/question-set/:id" element={<ProtectedRoutes isTeacher={true}><QuestionSetDetail /></ProtectedRoutes>} />
-                <Route path="/teacher-dashboard/tests" element={<ProtectedRoutes isTeacher={true}><Test /></ProtectedRoutes>} />
-                <Route path="/teacher-dashboard/tests/:id" element={<ProtectedRoutes isTeacher={true}><TestDetail /></ProtectedRoutes>} />
-                <Route path="/teacher-dashboard/tests/:id/results" element={<ProtectedRoutes isTeacher={true}><TestResults /></ProtectedRoutes>} />
+                <Route path="/teacher-dashboard/test" element={<ProtectedRoutes isTeacher={true}><Test /></ProtectedRoutes>} />
+                <Route path="/teacher-dashboard/test/:id" element={<ProtectedRoutes isTeacher={true}><TestDetail /></ProtectedRoutes>} />
+                <Route path="/teacher-dashboard/test/:id/results" element={<ProtectedRoutes isTeacher={true}><TestResults /></ProtectedRoutes>} />
 
                 <Route path="/student-dashboard/take-quiz/:id" element={<ProtectedRoutes isTeacher={false}><TakeQuiz /></ProtectedRoutes>} />
                 <Route path="/student-dashboard" element={<ProtectedRoutes isTeacher={false}><StudentDashboard /></ProtectedRoutes>} />
