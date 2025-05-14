@@ -11,6 +11,10 @@ import Test from "./pages/Test";
 import TestDetail from "./pages/TestDetail";
 import StudentDashboard from "./pages/StudentDashboard";
 import TakeQuiz from "./pages/TakeQuiz";
+import TestResults from "./pages/TestResults";
+import AnswerHistory from "./pages/AnswerHistory";
+import TestSearch from "./pages/TestSearch";
+import EnterTestId from "./pages/EnterTestId";
 import Home from "./pages/Home";
 
 export default function App() {
@@ -31,6 +35,8 @@ export default function App() {
                 <Route path="/teacher-dashboard" element={<ProtectedRoutes isTeacher={true}><TeacherDashboard /></ProtectedRoutes>} />
                 <Route path="/teacher-dashboard/question-set" element={<ProtectedRoutes isTeacher={true}><QuestionSet /></ProtectedRoutes>} />
                 <Route path="/teacher-dashboard/question-set/:id" element={<ProtectedRoutes isTeacher={true}><QuestionSetDetail /></ProtectedRoutes>} />
+                <Route path="/tests" element={<ProtectedRoutes isTeacher={true}><Test /></ProtectedRoutes>} />
+                <Route path="/tests/:id" element={<ProtectedRoutes isTeacher={true}><TestDetail /></ProtectedRoutes>} />
                 <Route path="/tests/:id/results" element={<ProtectedRoutes isTeacher={true}><TestResults /></ProtectedRoutes>} />
 
                 <Route path="/student-dashboard/take-quiz/:id" element={<ProtectedRoutes isTeacher={false}><TakeQuiz /></ProtectedRoutes>} />
